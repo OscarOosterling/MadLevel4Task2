@@ -21,6 +21,8 @@ import kotlinx.android.synthetic.main.fragment_history.*
  */
 class HistoryFragment : Fragment() {
 
+    private lateinit var gameRepository: GameRepository
+
     private val games = arrayListOf<Game>()
     private val gameAdapter = GameAdapter(games)
 
@@ -36,6 +38,25 @@ class HistoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViews()
         observeGameResult()
+
+        gameRepository = GameRepository(requireContext())
+        getGamesFromDatabase()
+
+        btn_Remove_All.setOnClickListener{
+            RemoveAllGames()
+        }
+    }
+
+    private fun RemoveAllGames() {
+        gameRepository.deleteAllGames()
+        getGamesFromDatabase()
+    }
+
+    private fun getGamesFromDatabase() {
+        val games = gameRepository.getAllGames()
+        this@HistoryFragment.games.clear()
+        this@HistoryFragment.games.addAll(games)
+        gameAdapter.notifyDataSetChanged()
     }
 
     private fun initViews() {
@@ -48,9 +69,9 @@ class HistoryFragment : Fragment() {
     private fun observeGameResult(){
         setFragmentResultListener(REQ_GAME_KEY){
             key, bundle -> bundle.getParcelable<Game>(BUNDLE_GAME_KEY)?.let{
-            val game = Game(it.computerPlay,it.playerPlay,it.result)
-            games.add(game)
-            gameAdapter.notifyDataSetChanged()
+            val game = Game(it.computerPlay,it.playerPlay,it.result,it.time)
+            gameRepository.insertGame(game)
+            getGamesFromDatabase()
         }
         }
     }

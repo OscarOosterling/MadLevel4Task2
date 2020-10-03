@@ -9,6 +9,8 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_game.*
+import java.sql.Time
+import java.sql.Timestamp
 import kotlin.random.Random
 
 
@@ -55,8 +57,8 @@ class GameFragment : Fragment() {
 
     }
 
-    private fun SaveGame(computerPlay: Int,play: Int,result: Int) {
-        val game = Game(computerPlay,play,result)
+    private fun SaveGame(computerPlay: Int,play: Int,result: Int,time: Timestamp) {
+        val game = Game(computerPlay,play,result,time)
         setFragmentResult(REQ_GAME_KEY, bundleOf(Pair(BUNDLE_GAME_KEY,game)))
         findNavController().navigate(R.id.action_gameFragment_to_historyFragment)
     }
@@ -70,7 +72,8 @@ class GameFragment : Fragment() {
         iv_computer_hand.setImageResource(images[computerPlay])
         txt_win_message.text = resultStrings.get(result)
 
-        SaveGame(computerPlay,play,result)
+        var time = Timestamp(System.currentTimeMillis())
+        SaveGame(computerPlay,play,result,time)
     }
 
     private fun results(play: Int, computerPlay: Int):Int {

@@ -9,12 +9,15 @@ import kotlinx.android.synthetic.main.item_game.view.*
 
 class GameAdapter(private val games:List<Game>): RecyclerView.Adapter<GameAdapter.ViewHolder>(){
     var images:IntArray = intArrayOf(R.drawable.rock,R.drawable.paper,R.drawable.scissors)
+    var resultStrings:Array<String> = arrayOf("Draw!","You win!","You Lose")
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
         fun databind(game:Game){
-            //itemView.iv_computer_hand.setImageResource(images[game.computerPlay])
-            //itemView.iv_player_hand.setImageResource(images[game.playerPlay])
-            itemView.txt_result_cardview.text = game.result.toString()
+
+            itemView.iv_computer_hand_card.setImageResource(images[game.computerPlay])
+            itemView.iv_player_hand_card.setImageResource(images[game.playerPlay])
+            itemView.txt_result_cardview.text = resultStrings[game.result]
+            itemView.txt_timestamp.text = game.time.toString()
         }
     }
 

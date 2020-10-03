@@ -18,4 +18,5 @@
     <string name="computer">computer</string>
     <string name="Player">Player</string>
     <string name="historybutton">history</string>
+    <string name="RemoveAll">Remove all games</string>
 </resources>
